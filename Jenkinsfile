@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the repository
+                // Correct way to checkout the repository
                 checkout scm
             }
         }
@@ -13,15 +13,15 @@ pipeline {
             steps {
                 // Install Python environment (assuming you are using a Unix-like system)
                 sh 'python3 -m venv venv'
-                sh 'source venv/bin/activate'
-                sh 'pip install --upgrade pip'
+                // Activate the virtual environment using '.' instead of 'source'
+                sh '. venv/bin/activate && pip install --upgrade pip'
             }
         }
 
         stage('Run Test') {
             steps {
-                // Run the Python script
-                sh 'source venv/bin/activate && python test.py'
+                // Run the Python script within the virtual environment
+                sh '. venv/bin/activate && python test.py'
             }
         }
     }
